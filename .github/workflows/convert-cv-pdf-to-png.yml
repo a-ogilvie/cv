@@ -2,7 +2,7 @@ name: ConvertCVPDFToPNG
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -10,13 +10,16 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
 
-    - name: Convert pdf to img
-      run: pdftoppm $GITHUB_WORKSPACE/AlexOgilvieResume.pdf AlexOgilvieResume -png -f 1 -singlefile
+      - name: Install pdftoppm
+        run: sudo apt-get install poppler-utils -y
 
-    - name: Commit new img
-      run: |
-        git add .
-        git commit -m "Github Action: convert PDF to PNG"
+      - name: Convert pdf to img
+        run: pdftoppm $GITHUB_WORKSPACE/AlexOgilvieResume.pdf AlexOgilvieResume -png -f 1 -singlefile
+
+      - name: Commit new img
+        run: |
+          git add .
+          git commit -m "Github Action: convert PDF to PNG"
